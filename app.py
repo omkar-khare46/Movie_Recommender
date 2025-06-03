@@ -2,9 +2,15 @@ import streamlit as st
 import pandas as pd
 import requests
 import pickle
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+
 
 def fetch_poster(id):
-    api_key = 'dc2134ac7bd53727497c564308231c39'
+    
+    api_key = os.getenv("tmdb_api_key")
     url = f"https://api.themoviedb.org/3/movie/{id}?api_key={api_key}&language=en-US"
     response = requests.get(url)
     data = response.json()
@@ -16,8 +22,8 @@ def fetch_poster(id):
 
 movies_list = pd.read_pickle('movies.pkl')
 movies = movies_list['title'].values
-with open('similarity.pkl', 'rb') as f:
-    similarity = pickle.load(f)
+## with open('similarity.pkl', 'rb') as f:
+    ##similarity = pickle.load(f)
 with open('similarity_matrix.pkl', 'rb') as f:
     similarity_matrix = pickle.load(f)
 
@@ -32,6 +38,7 @@ def recommend(movie):
         movie_id = movies_list.iloc[i[0]].id
         recommended_movies.append(movies_list.iloc[i[0]].title)
         recommended_movies_posters.append(fetch_poster(movie_id))
+
     return recommended_movies, recommended_movies_posters
 
 

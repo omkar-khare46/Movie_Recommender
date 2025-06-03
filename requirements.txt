@@ -1,0 +1,8 @@
+streamlit 
+pandas
+requests
+pickle
+python-dotenv
+scikit-learn
+langchain_huggingface
+transformers
